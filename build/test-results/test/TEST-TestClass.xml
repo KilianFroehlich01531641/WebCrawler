@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestClass" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-04-17T16:14:45" hostname="DESKTOP-2FQ2SSA" time="0.616">
+<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-17T17:49:26" hostname="DESKTOP-2FQ2SSA" time="13.457">
   <properties/>
-  <testcase name="testingIfWrongURLIsHandledRight" classname="TestClass" time="0.002"/>
-  <testcase name="writeToFileTest" classname="TestClass" time="0.009"/>
-  <testcase name="creatingFileTest" classname="TestClass" time="0.001"/>
-  <testcase name="testingIfURLIsReadRight" classname="TestClass" time="0.19"/>
-  <testcase name="lookingForHeaders" classname="TestClass" time="0.413"/>
-  <testcase name="lookingForHeadersInEmptyHTML" classname="TestClass" time="0.001"/>
+  <testcase name="testWhole" classname="TestClass" time="13.457"/>
   <system-out><![CDATA[File Created.
-File Created.
-File exists already.
+going deeper: Level 1 now.
+going deeper: Level 2 now.
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

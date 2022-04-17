@@ -1,3 +1,5 @@
+import jdk.internal.jline.internal.Urls;
+
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,20 +20,49 @@ public class WebCrawler {
         queueList = new ArrayList<>(userPageDepth);
         depthLevelResults = new ArrayList<>(userPageDepth);
         for (int i = 0; i < userPageDepth; i++) {
-            queueList.add(new ArrayList<URL>());
+            queueList.add(new ArrayList<String>());
             depthLevelResults.add("");
         }
 
-        /*createMDFile();
-        writeMDFile("<br>depth: "+ this.userPageDepth +"\n" +
-                "<br>source language: english\n" +
-                "<br>target language: german\n" +
-                "<br>summary: ");
-         */
         try{
-            queueList.get(0).add(new URL (userURL));
+            queueList.get(0).add(userURL);
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public void start(){
+        createMDFile();
+        writeMDFile("<br>depth: "+ this.userMaximumPageDepth +"\n" +
+                "<br>source language: english\n" +
+                "<br>target language: german\n" +
+                "<br>summary: \n\n");
+        for (int i = 0; i < userMaximumPageDepth; i++) {
+            for (int j = 0; j < queueList.get(i).size() ; j++) {
+                crawl((String) queueList.get(i).get(j), i);
+            }
+            System.out.println("going deeper: Level " + (i+1)+ " now.");
+        }
+        int depthLevelCounter = 1;
+        for (String result: depthLevelResults) {
+            writeMDFile("---------Depth Level: " + depthLevelCounter + "--------\n");
+            writeMDFile(result);
+            depthLevelCounter++;
+        }
+    }
+
+    public void crawl(String urlString, int currentItteration){
+        try{
+            URL url = new URL(urlString);
+            String currentHTML = getRawHTMLFromURL(url);
+            if(currentItteration+1 == userMaximumPageDepth || currentHTML == ""){
+                currentURLResultWriting(currentHTML, currentItteration , urlString);
+            }else{
+                parsingForLinksInString(currentHTML, currentItteration, urlString);
+            }
+        }catch (Exception e){
+            String currentHTML = "";
+            currentURLResultWriting(currentHTML, currentItteration, urlString);
         }
     }
 
@@ -46,7 +77,7 @@ public class WebCrawler {
                 currentLineInHMTL = input.readLine();
             }while (currentLineInHMTL != null);
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return rawHTMLPage;
         }
         return rawHTMLPage;
@@ -70,7 +101,7 @@ public class WebCrawler {
 
     public void writeMDFile(String input){
         try{
-            FileWriter resultFile = new FileWriter("result_"+ userMaximumPageDepth + ".md");
+            FileWriter resultFile = new FileWriter("result_"+ userMaximumPageDepth + ".md", true);
             resultFile.write(input);
             resultFile.close();
         }catch (IOException e){
@@ -78,26 +109,26 @@ public class WebCrawler {
         }
     }
 
-    public void parsingForLinksInString(String rawHTMLPage, int currentDepth, URL currentURL){
+    public void currentURLResultWriting(String rawHTMLPage, int currentDepth, String currentURL){
         queueList.get(currentDepth).remove(currentURL);
-        if(currentDepth+1 >= userMaximumPageDepth){
-            return;
-        }
         if(rawHTMLPage == ""){
-            depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> broken link to <a>" + currentURL.toString() +"</a>\n\n");
-            return;
+            depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> broken link to <a>" + currentURL +"</a>\n\n");
         }else{
-            depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> link to <a>" + currentURL.toString() +"</a>\n");
+            depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> link to <a>" + currentURL +"</a>\n");
             parsingForHeadersInString(rawHTMLPage, currentDepth);
         }
+    }
 
-        String urlPattern = "(www|http:|https:)+[^\\s]+[\\w]";
+    public void parsingForLinksInString(String rawHTMLPage, int currentDepth, String currentURL){
+        currentURLResultWriting(rawHTMLPage, currentDepth, currentURL);
+
+        String urlPattern = "(www|http:|https:)+[^\\s^\"^\']+[\\w]";
         Pattern pattern = Pattern.compile(urlPattern);
         Matcher matcher = pattern.matcher(rawHTMLPage);
 
         try{
             while (matcher.find()){
-                queueList.get(currentDepth+1).add(new URL(matcher.group()));
+                queueList.get(currentDepth+1).add(matcher.group());
             }
         }catch (Exception e){
             e.printStackTrace();

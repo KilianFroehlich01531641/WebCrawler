@@ -1,3 +1,4 @@
+import jdk.internal.jline.internal.Urls;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ public class TestClass {
 
     @Before
     public void setup(){
-        webCrawler = new WebCrawler(4, "http://www.google.at");
+        webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp");
     }
 
     @Test
@@ -85,6 +86,41 @@ public class TestClass {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void resultWritingTest(){
+        try {
+            webCrawler.currentURLResultWriting(webCrawler.getRawHTMLFromURL(new URL("https://www.w3schools.com/tags/tag_header.asp")), 0, "https://www.w3schools.com/tags/tag_header.asp");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(webCrawler.depthLevelResults.get(0).contains("<br>--> link to <a>"));
+    }
+
+    @Test
+    public void resultWritingTestWithEmptyHTML(){
+        try {
+            webCrawler.currentURLResultWriting("", 0, "https://www.w3schools.com/tags/tag_header.asp");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(webCrawler.depthLevelResults.get(0).contains("<br>--> broken link to <a>"));
+    }
+
+    @Test
+    public void URLAddingToQueue(){
+        try{
+            webCrawler.parsingForLinksInString(webCrawler.getRawHTMLFromURL(new URL("https://www.w3schools.com/tags/tag_header.asp")), 0, "https://www.w3schools.com/tags/tag_header.asp");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        assertTrue(webCrawler.queueList.get(1).size() != 0);
+    }
+
+    @Test
+    public void testWhole(){
+        webCrawler.start();
     }
 
 }
