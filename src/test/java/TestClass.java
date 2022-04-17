@@ -120,6 +120,8 @@ public class TestClass {
 
     @Test
     public void testWhole(){
+        //webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp");
+        webCrawler = new WebCrawler(2, "https://de.wikipedia.org/wiki/Javadoc#:~:text=Javadoc%20ist%20ein%20Software%2DDokumentationswerkzeug,Bestandteil%20des%20Java%20Development%20Kits.");
         webCrawler.start();
     }
 

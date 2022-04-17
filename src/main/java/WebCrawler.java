@@ -39,6 +39,7 @@ public class WebCrawler {
                 "<br>summary: \n\n");
         for (int i = 0; i < userMaximumPageDepth; i++) {
             for (int j = 0; j < queueList.get(i).size() ; j++) {
+                System.out.println("current link: " + (String) queueList.get(i).get(j));
                 crawl((String) queueList.get(i).get(j), i);
             }
             System.out.println("going deeper: Level " + (i+1)+ " now.");
@@ -136,7 +137,7 @@ public class WebCrawler {
     }
 
     public void parsingForHeadersInString(String rawHTMLPage, int currentDepth){
-        String headerPattern = "(<h[1-6]>)[\\w]+(</h[1-6]>)";
+        String headerPattern = "(<h[1-6][^><]*>)[\\w]+(</h[1-6]>)";
         Pattern pattern = Pattern.compile(headerPattern);
         Matcher matcher = pattern.matcher(rawHTMLPage);
         String headerString = "";

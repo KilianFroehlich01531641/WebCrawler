@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-17T17:49:26" hostname="DESKTOP-2FQ2SSA" time="13.457">
+<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-04-17T18:27:29" hostname="DESKTOP-2FQ2SSA" time="5.728">
   <properties/>
-  <testcase name="testWhole" classname="TestClass" time="13.457"/>
+  <testcase name="testWhole" classname="TestClass" time="5.728"/>
   <system-out><![CDATA[File Created.
+current link: https://de.wikipedia.org/wiki/Javadoc#:~:text=Javadoc%20ist%20ein%20Software%2DDokumentationswerkzeug,Bestandteil%20des%20Java%20Development%20Kits.
 going deeper: Level 1 now.
+current link: https://creativecommons.org/licenses/by-sa/3.0
+current link: http://www.oracle.com/technetwork/java/javase/documentation/javadoc-137458.html
+current link: https://de.wikipedia.org/w/index.php?title=Javadoc&amp;oldid=210777254
+current link: https://www.wikidata.org/wiki/Special:EntityPage/Q1413077
+current link: https://en.wikipedia.org/wiki/Javadoc
+current link: https://fr.wikipedia.org/wiki/Javadoc
+current link: https://ja.wikipedia.org/wiki/Javadoc
+current link: https://nn.wikipedia.org/wiki/Javadoc
+current link: https://pl.wikipedia.org/wiki/Javadoc
+current link: https://ru.wikipedia.org/wiki/Javadoc
+current link: https://tr.wikipedia.org/wiki/Javadoc
+current link: https://zh.wikipedia.org/wiki/Javadoc
+current link: https://pageviews.wmcloud.org/?pages=Javadoc&amp;project=de.wikipedia.org
+current link: https://de.wikipedia.org/wiki/Wikipedia:Lizenzbestimmungen_Creative_Commons_Attribution-ShareAlike_3.0_Unported
+current link: https://meta.wikimedia.org/wiki/Privacy_policy/de
+current link: https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute
+current link: https://foundation.wikimedia.org/wiki/Cookie_statement
+current link: https://www.mediawiki.org
+current link: https:\/\/de.wikipedia.org\/wiki\/Javadoc
+current link: http:\/\/www.wikidata.org\/entity\/Q1413077
 going deeper: Level 2 now.
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
