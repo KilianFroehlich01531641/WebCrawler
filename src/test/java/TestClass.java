@@ -16,7 +16,7 @@ public class TestClass {
 
     @Before
     public void setup(){
-        webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp");
+        webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp", "en", "de");
     }
 
     @Test
@@ -121,8 +121,27 @@ public class TestClass {
     @Test
     public void testWhole(){
         //webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp");
-        webCrawler = new WebCrawler(2, "https://de.wikipedia.org/wiki/Javadoc#:~:text=Javadoc%20ist%20ein%20Software%2DDokumentationswerkzeug,Bestandteil%20des%20Java%20Development%20Kits.");
+        webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp", "en", "de");
         webCrawler.start();
+    }
+
+    @Test
+    public void testTranslationEnToDe(){
+        String answer = webCrawler.translatingString("Hello", "de", "en");
+        assertEquals("Hallo", answer);
+    }
+
+    @Test
+    public void testTranslationDeToEn(){
+        String answer = webCrawler.translatingString("Javadoc", "en", "de");
+        assertEquals("Hi", answer);
+    }
+
+    @Test
+    public void headerCuttingTest(){
+        String testString = "<h1 id=\"firstHeading\" class=\"firstHeading mw-first-heading\">Example text</h1>";
+        String testStringResult = "<h1 id=\"firstHeading\" class=\"firstHeading mw-first-heading\">Beispieltext</h1>";
+        assertEquals(testStringResult, webCrawler.translateHeaders(testString));
     }
 
 }

@@ -1,69 +1,191 @@
 <br>depth: 2
-<br>source language: english
-<br>target language: german
+<br>source language: en
+<br>target language: de
+<br>summary: 
+
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
+
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
+
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
+
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
+
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
+
+<br>depth: 2
+<br>source language: en
+<br>target language: de
 <br>summary: 
 
 ---------Depth Level: 1--------
-<br>--> link to <a>https://de.wikipedia.org/wiki/Javadoc#:~:text=Javadoc%20ist%20ein%20Software%2DDokumentationswerkzeug,Bestandteil%20des%20Java%20Development%20Kits.</a>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
-<h2 id="mw-toc-heading">Inhaltsverzeichnis</h2>
+<br>--> link to <a>https://www.reddit.com/</a>
 
 ---------Depth Level: 2--------
-<br>--> link to <a>https://creativecommons.org/licenses/by-sa/3.0</a>
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
 
-<br>--> link to <a>http://www.oracle.com/technetwork/java/javase/documentation/javadoc-137458.html</a>
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
 
-<br>--> link to <a>https://de.wikipedia.org/w/index.php?title=Javadoc&amp;oldid=210777254</a>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
-<h2 id="mw-toc-heading">Inhaltsverzeichnis</h2>
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
 
-<br>--> link to <a>https://www.wikidata.org/wiki/Special:EntityPage/Q1413077</a>
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
 
-<br>--> link to <a>https://en.wikipedia.org/wiki/Javadoc</a>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
-<h2 id="mw-toc-heading">Contents</h2>
+---------Depth Level: 1--------
+<br>--> link to <a>https://www.reddit.com/</a>
 
-<br>--> link to <a>https://fr.wikipedia.org/wiki/Javadoc</a>
-<h3 class="mw-sidebar-action-heading">Langues</h3>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
-<h2 id="mw-toc-heading">Sommaire</h2>
+---------Depth Level: 2--------
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
 
-<br>--> link to <a>https://ja.wikipedia.org/wiki/Javadoc</a>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
+---------Depth Level: 1--------
+<br>--> link to <a>https://www.reddit.com/</a>
 
-<br>--> link to <a>https://nn.wikipedia.org/wiki/Javadoc</a>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
-<h2>Navigasjonsmeny</h2>
+---------Depth Level: 2--------
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
 
-<br>--> link to <a>https://pl.wikipedia.org/wiki/Javadoc</a>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
 
-<br>--> link to <a>https://ru.wikipedia.org/wiki/Javadoc</a>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
+<br>depth: 2
+<br>source language: en
+<br>target language: de
+<br>summary: 
 
-<br>--> link to <a>https://tr.wikipedia.org/wiki/Javadoc</a>
-<h3 class="mw-sidebar-action-heading">Diller</h3>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
+---------Depth Level: 1--------
+<br>--> link to <a>https://www.w3schools.com/tags/tag_header.asp</a>
+<h3 class="w3-margin-top">JavaScript</h3>
+<h3 class="w3-margin-top">Programmierung</h3>
+<h3 class="w3-margin-top">HTML</h3>
+<h3 class="w3-margin-top">CSS</h3>
+<h3 class="w3-margin-top">JavaScript</h3>
+<h3 class="w3-margin-top">Programmierung</h3>
+<h3 class="w3-margin-top">XML</h3>
+<h3>Beispiel</h3>
+<h3>Beispiel</h3>
+<h4>Übungen</h4>
 
-<br>--> link to <a>https://zh.wikipedia.org/wiki/Javadoc</a>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Javadoc</h1>
+---------Depth Level: 2--------
+<br>--> link to <a>https://www.w3schools.com/images/w3schools_logo_436_2.png</a>
 
-<br>--> link to <a>https://pageviews.wmcloud.org/?pages=Javadoc&amp;project=de.wikipedia.org</a>
+<br>--> link to <a>https://cdn.snigelweb.com/adengine/w3schools.com/loader.js</a>
 
-<br>--> link to <a>https://de.wikipedia.org/wiki/Wikipedia:Lizenzbestimmungen_Creative_Commons_Attribution-ShareAlike_3.0_Unported</a>
+<br>--> link to <a>https://www.w3schools.com/videos/index.php</a>
+<h3 class="w3-margin-top">JavaScript</h3>
+<h3 class="w3-margin-top">Programmierung</h3>
+<h3 class="w3-margin-top">HTML</h3>
+<h3 class="w3-margin-top">CSS</h3>
+<h3 class="w3-margin-top">JavaScript</h3>
+<h3 class="w3-margin-top">Programmierung</h3>
+<h3 class="w3-margin-top">XML</h3>
 
-<br>--> link to <a>https://meta.wikimedia.org/wiki/Privacy_policy/de</a>
-<h1 id="firstHeading" class="firstHeading mw-first-heading">Datenschutzrichtlinie</h1>
-<h2 id="mw-toc-heading">Contents</h2>
+<br>--> link to <a>https://courses.w3schools.com</a>
 
-<br>--> link to <a>https://www.mediawiki.org/wiki/Special:MyLanguage/How_to_contribute</a>
+<br>--> link to <a>https://www.w3schools.com/spaces</a>
 
-<br>--> link to <a>https://foundation.wikimedia.org/wiki/Cookie_statement</a>
-<h2 id="mw-toc-heading">Contents</h2>
+<br>--> link to <a>https://courses.w3schools.com/courses/html</a>
 
-<br>--> link to <a>https://www.mediawiki.org</a>
+<br>--> link to <a>https://courses.w3schools.com/courses/javascript</a>
 
-<br>--> broken link to <a>https:\/\/de.wikipedia.org\/wiki\/Javadoc</a>
+<br>--> link to <a>https://courses.w3schools.com/courses/sql</a>
 
-<br>--> broken link to <a>http:\/\/www.wikidata.org\/entity\/Q1413077</a>
+<br>--> link to <a>https://courses.w3schools.com/courses/python</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/pandas-fundamentals</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/jquery</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/cplusplus</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/r-fundamentals</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/introduction-to-cyber-security</a>
+
+<br>--> link to <a>https://courses.w3schools.com/browse/certifications</a>
+
+<br>--> link to <a>https://courses.w3schools.com/browse/certifications/courses/css-certification-exam</a>
+
+<br>--> link to <a>https://courses.w3schools.com/browse/certifications/courses/front-end-certification-exam</a>
+
+<br>--> link to <a>https://courses.w3schools.com/browse/certifications/courses/php-certification-exam</a>
+
+<br>--> link to <a>https://courses.w3schools.com/browse/certifications/courses/data-science-certification-exam</a>
+
+<br>--> link to <a>https://courses.w3schools.com/browse/certifications/courses/bootstrap-4-certification-exam</a>
+
+<br>--> link to <a>https://courses.w3schools.com/browse/certifications/courses/java-certification-exam</a>
+
+<br>--> link to <a>https://courses.w3schools.com/browse/certifications/courses/react-certification-exam</a>
+
+<br>--> link to <a>https://www.w3schools.com/spaces</a>
+
+<br>--> link to <a>https://shop.w3schools.com</a>
+
+<br>--> link to <a>https://www.w3schools.com/videos/index.php</a>
+<h3 class="w3-margin-top">JavaScript</h3>
+<h3 class="w3-margin-top">Programmierung</h3>
+<h3 class="w3-margin-top">HTML</h3>
+<h3 class="w3-margin-top">CSS</h3>
+<h3 class="w3-margin-top">JavaScript</h3>
+<h3 class="w3-margin-top">Programmierung</h3>
+<h3 class="w3-margin-top">XML</h3>
+
+<br>--> link to <a>https://www.instagram.com/w3schools.com_official</a>
+
+<br>--> link to <a>https://discord.gg/6Z7UaRbUQM</a>
+
+<br>--> link to <a>http://www.w3.org/2000/svg</a>
+
+<br>--> link to <a>https://shop.w3schools.com</a>
+
+<br>--> broken link to <a>www.w3schools.com/cert/default.asp</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/css</a>
+
+<br>--> link to <a>https://courses.w3schools.com/programs/front-end</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/python</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/jquery</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/cplusplus</a>
+
+<br>--> link to <a>https://courses.w3schools.com/courses/xml</a>
+
+<br>--> broken link to <a>www.w3schools.com/w3css/default.asp</a>
+
+<br>--> link to <a>https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js</a>
 

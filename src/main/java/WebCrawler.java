@@ -1,24 +1,27 @@
-import jdk.internal.jline.internal.Urls;
-
 import java.io.*;
+import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WebCrawler {
 
     int userMaximumPageDepth;
-    ArrayList<List> queueList;
+    ArrayList<ArrayList> queueList;
     ArrayList<String> depthLevelResults;
+    String source;
+    String target;
+    ArrayList<String> alreadyVisitedURLs;
 
-    public WebCrawler(int userPageDepth, String userURL){
+    public WebCrawler(int userPageDepth, String userURL, String source, String target){
         this.userMaximumPageDepth = userPageDepth;
         queueList = new ArrayList<>(userPageDepth);
         depthLevelResults = new ArrayList<>(userPageDepth);
+        alreadyVisitedURLs = new ArrayList<String>();
         for (int i = 0; i < userPageDepth; i++) {
             queueList.add(new ArrayList<String>());
             depthLevelResults.add("");
@@ -29,18 +32,21 @@ public class WebCrawler {
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        this.source = source;
+        this.target = target;
     }
 
     public void start(){
         createMDFile();
         writeMDFile("<br>depth: "+ this.userMaximumPageDepth +"\n" +
-                "<br>source language: english\n" +
-                "<br>target language: german\n" +
+                "<br>source language: "+ source +"\n" +
+                "<br>target language: "+ target +"\n" +
                 "<br>summary: \n\n");
         for (int i = 0; i < userMaximumPageDepth; i++) {
             for (int j = 0; j < queueList.get(i).size() ; j++) {
-                System.out.println("current link: " + (String) queueList.get(i).get(j));
-                crawl((String) queueList.get(i).get(j), i);
+                System.out.println("current link: " + queueList.get(i).get(j));
+                crawl(queueList.get(i).get(j).toString(), i);
             }
             System.out.println("going deeper: Level " + (i+1)+ " now.");
         }
@@ -112,6 +118,7 @@ public class WebCrawler {
 
     public void currentURLResultWriting(String rawHTMLPage, int currentDepth, String currentURL){
         queueList.get(currentDepth).remove(currentURL);
+        alreadyVisitedURLs.add(currentURL);
         if(rawHTMLPage == ""){
             depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> broken link to <a>" + currentURL +"</a>\n\n");
         }else{
@@ -123,13 +130,17 @@ public class WebCrawler {
     public void parsingForLinksInString(String rawHTMLPage, int currentDepth, String currentURL){
         currentURLResultWriting(rawHTMLPage, currentDepth, currentURL);
 
-        String urlPattern = "(www|http:|https:)+[^\\s^\"^\']+[\\w]";
+        String urlPattern = "(www|http:|https:)+[^\\s\"\'\\*\\)]+[\\w]";
         Pattern pattern = Pattern.compile(urlPattern);
         Matcher matcher = pattern.matcher(rawHTMLPage);
 
         try{
             while (matcher.find()){
-                queueList.get(currentDepth+1).add(matcher.group());
+                String foundString = matcher.group();
+                //dunno why but contains nor equals works to compare two strings as it will return always false
+                if(!(alreadyVisitedURLs.contains(foundString))){
+                    queueList.get(currentDepth+1).add(foundString);
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -143,8 +154,43 @@ public class WebCrawler {
         String headerString = "";
 
         while (matcher.find()){
-            headerString += matcher.group() + "\n";
+            String translation = translateHeaders(matcher.group());
+            headerString += translation + "\n";
         }
         depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + headerString +"\n");
+    }
+
+    //Source:https://stackoverflow.com/questions/8147284/how-to-use-google-translate-api-in-my-java-application
+    public String translatingString(String text, String langTo, String langFrom){
+        try{
+            String urlStr = "https://script.google.com/macros/s/AKfycbw_Cn96JWZU7YA0aovyK50WuP-Bkqg023vHuHnRm_icFWpmOjkkXcNRQ1eFP8E3itQI/exec" +
+                    "?q=" + URLEncoder.encode(text, "UTF-8") +
+                    "&target=" + langTo +
+                    "&source=" + langFrom;
+            URL url = new URL(urlStr);
+            StringBuilder response = new StringBuilder();
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            return response.toString();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public String translateHeaders(String input){
+         String[] headerParts = input.split(">");
+         String[] headerPartsTwo = headerParts[1].split("<");
+         String translatedString = translatingString(headerPartsTwo[0], target, source);
+         if(translatedString != ""){
+             return headerParts[0] + ">" + translatedString + "<" + headerPartsTwo[1] + ">";
+         }
+         return headerParts[0] + ">" + headerPartsTwo[0] + "<" + headerPartsTwo[1] + ">";
     }
 }
