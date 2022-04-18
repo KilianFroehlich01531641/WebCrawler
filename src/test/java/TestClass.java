@@ -121,7 +121,7 @@ public class TestClass {
     @Test
     public void testWhole(){
         //webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp");
-        webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp", "en", "de");
+        webCrawler = new WebCrawler(2, "https://www.reddit.com/", "en", "de");
         webCrawler.start();
     }
 

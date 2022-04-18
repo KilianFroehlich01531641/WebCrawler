@@ -43,6 +43,7 @@ public class WebCrawler {
                 "<br>source language: "+ source +"\n" +
                 "<br>target language: "+ target +"\n" +
                 "<br>summary: \n\n");
+
         for (int i = 0; i < userMaximumPageDepth; i++) {
             for (int j = 0; j < queueList.get(i).size() ; j++) {
                 System.out.println("current link: " + queueList.get(i).get(j));
@@ -50,6 +51,7 @@ public class WebCrawler {
             }
             System.out.println("going deeper: Level " + (i+1)+ " now.");
         }
+        
         int depthLevelCounter = 1;
         for (String result: depthLevelResults) {
             writeMDFile("---------Depth Level: " + depthLevelCounter + "--------\n");
@@ -137,8 +139,8 @@ public class WebCrawler {
         try{
             while (matcher.find()){
                 String foundString = matcher.group();
-                //dunno why but contains nor equals works to compare two strings as it will return always false
-                if(!(alreadyVisitedURLs.contains(foundString))){
+                //have to check two lists now but decided to check here and not in the start() method because now I just don't add any links which are not supposed to be in here
+                if(!(alreadyVisitedURLs.contains(foundString) || queueList.get(currentDepth+1).contains(foundString))){
                     queueList.get(currentDepth+1).add(foundString);
                 }
             }
