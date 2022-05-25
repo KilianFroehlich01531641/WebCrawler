@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 
 public class WebCrawler {
 
+    /**
+     * Global variables
+     */
     int userMaximumPageDepth;
     ArrayList<ArrayList> queueList;
     ArrayList<String> depthLevelResults;
@@ -17,6 +20,13 @@ public class WebCrawler {
     String target;
     ArrayList<String> alreadyVisitedURLs;
 
+    /**
+     * Constructor
+     * @param userPageDepth - the number of times the crawler looks into each link from a page
+     * @param userURL - the starting page
+     * @param source - the language the web pages are to be expected
+     * @param target - the language to translate into
+     */
     public WebCrawler(int userPageDepth, String userURL, String source, String target){
         this.userMaximumPageDepth = userPageDepth;
         queueList = new ArrayList<>(userPageDepth);
@@ -37,12 +47,11 @@ public class WebCrawler {
         this.target = target;
     }
 
+    /**
+     * Main method of this class. Initializes the file, crawls through the webpages and prints resulst into the file.
+     */
     public void start(){
-        createMDFile();
-        writeMDFile("<br>depth: "+ this.userMaximumPageDepth +"\n" +
-                "<br>source language: "+ source +"\n" +
-                "<br>target language: "+ target +"\n" +
-                "<br>summary: \n\n");
+        initializeFile();
 
         for (int i = 0; i < userMaximumPageDepth; i++) {
             for (int j = 0; j < queueList.get(i).size() ; j++) {
@@ -51,7 +60,25 @@ public class WebCrawler {
             }
             System.out.println("going deeper: Level " + (i+1)+ " now.");
         }
-        
+
+        writeResultsToFile();
+    }
+
+    /**
+     * creates a MD file and writes header information into it.
+     */
+    public void initializeFile(){
+        createMDFile();
+        writeMDFile("<br>depth: "+ this.userMaximumPageDepth +"\n" +
+                "<br>source language: "+ source +"\n" +
+                "<br>target language: "+ target +"\n" +
+                "<br>summary: \n\n");
+    }
+
+    /**
+     * Takes the gloval val depthLevelResults and writes the content into the MD file.
+     */
+    public void writeResultsToFile(){
         int depthLevelCounter = 1;
         for (String result: depthLevelResults) {
             writeMDFile("---------Depth Level: " + depthLevelCounter + "--------\n");
@@ -60,6 +87,12 @@ public class WebCrawler {
         }
     }
 
+    /**
+     * the method that handles the lookup and then starts to write the result into the file.
+     * If the URL can't be accessed will handle the link accordingly.
+     * @param urlString - the url to crwal through
+     * @param currentItteration - the depth level that is currently worked on
+     */
     public void crawl(String urlString, int currentItteration){
         try{
             URL url = new URL(urlString);
@@ -75,7 +108,11 @@ public class WebCrawler {
         }
     }
 
-
+    /**
+     * Opens Buffered reader and writes HTML File into string.
+     * @param userURL - the URL of the page
+     * @return - the page as a string or and empty string if it can't be read.
+     */
     public String getRawHTMLFromURL(URL userURL){
         String rawHTMLPage = "";
         try{
@@ -86,12 +123,15 @@ public class WebCrawler {
                 currentLineInHMTL = input.readLine();
             }while (currentLineInHMTL != null);
         } catch (Exception e){
-            //e.printStackTrace();
             return rawHTMLPage;
         }
         return rawHTMLPage;
     }
 
+    /**
+     * Creates a File.
+     * @return true if the file is created; false if it already exists or an error occurred.
+     */
     public boolean createMDFile(){
         File resultFile = new File("result_"+ userMaximumPageDepth + ".md");
         try{
@@ -108,16 +148,30 @@ public class WebCrawler {
         }
     }
 
-    public void writeMDFile(String input){
+    /**
+     * Writes a string into a file.
+     * @param input - the content to write into the file.
+     * @return - true if success; false if an error occurred.
+     */
+    public boolean writeMDFile(String input){
         try{
             FileWriter resultFile = new FileWriter("result_"+ userMaximumPageDepth + ".md", true);
             resultFile.write(input);
             resultFile.close();
+            return true;
         }catch (IOException e){
-            e.printStackTrace();
+            System.out.println("Could not write to file.");
+            return false;
         }
     }
 
+    /**
+     * Writes the currently found link into the global depthLevelResults list.
+     * Also removes link from queue and adds it to visited list.
+     * @param rawHTMLPage - the page in which headers should be detected
+     * @param currentDepth - current iteration
+     * @param currentURL - the url of the HTML page
+     */
     public void currentURLResultWriting(String rawHTMLPage, int currentDepth, String currentURL){
         queueList.get(currentDepth).remove(currentURL);
         alreadyVisitedURLs.add(currentURL);
@@ -129,6 +183,12 @@ public class WebCrawler {
         }
     }
 
+    /**
+     * Look into the HTML of an page and searches for more links for future iterations.
+     * @param rawHTMLPage - the HTML in which the links are searched
+     * @param currentDepth - current iteration
+     * @param currentURL - the url of the HTML page
+     */
     public void parsingForLinksInString(String rawHTMLPage, int currentDepth, String currentURL){
         currentURLResultWriting(rawHTMLPage, currentDepth, currentURL);
 
@@ -149,6 +209,11 @@ public class WebCrawler {
         }
     }
 
+    /**
+     * Searches for header tags in th HTML file.
+     * @param rawHTMLPage - the HTML in which the links are searched
+     * @param currentDepth - current iteration
+     */
     public void parsingForHeadersInString(String rawHTMLPage, int currentDepth){
         String headerPattern = "(<h[1-6][^><]*>)[\\w]+(</h[1-6]>)";
         Pattern pattern = Pattern.compile(headerPattern);
@@ -162,6 +227,13 @@ public class WebCrawler {
         depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + headerString +"\n");
     }
 
+    /**
+     * Translates a string from given language to target language.
+     * @param text - the string to translate
+     * @param langTo - source language
+     * @param langFrom - target language
+     * @return a translated version of the input string
+     */
     //Source:https://stackoverflow.com/questions/8147284/how-to-use-google-translate-api-in-my-java-application
     public String translatingString(String text, String langTo, String langFrom){
         try{
@@ -186,6 +258,11 @@ public class WebCrawler {
         return "";
     }
 
+    /**
+     * removes header tags from string, translates it and gives it back with headers.
+     * @param input - the string to translate
+     * @return the translated version of the header
+     */
     public String translateHeaders(String input){
          String[] headerParts = input.split(">");
          String[] headerPartsTwo = headerParts[1].split("<");
