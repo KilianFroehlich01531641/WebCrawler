@@ -16,7 +16,7 @@ public class TestClass {
 
     @Before
     public void setup(){
-        webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp", "en", "de");
+        webCrawler = new WebCrawler("https://www.w3schools.com/tags/tag_header.asp",2, "en", "de");
     }
 
     @Test
@@ -68,10 +68,11 @@ public class TestClass {
     public void lookingForHeaders(){
         try{
             webCrawler.parsingForHeadersInString(webCrawler.getRawHTMLFromURL(new URL("https://www.w3schools.com/tags/tag_header.asp")), 0);
-            assertEquals("<h3>Example</h3>\n" +
-                    "<h3>Example</h3>\n" +
-                    "<h4>Exercises</h4>\n" +
-                    "\n", webCrawler.depthLevelResults.get(0));
+            String expectedMessage = "<h3 class=\"w3-margin-top\">JavaScript</h3>"
+                    +"\n"+ "<h3 class=\"w3-margin-top\">Programmierung</h3>"
+                    +"\n"+ "<h3 class=\"w3-margin-top\">HTML</h3>"
+                    +"\n"+ "<h3 class=\"w3-margin-top\">CSS</h3>";
+            assertTrue(webCrawler.depthLevelResults.get(0).contains(expectedMessage));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -121,7 +122,7 @@ public class TestClass {
     @Test
     public void testWhole(){
         //webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp");
-        webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp", "en", "de");
+        webCrawler = new WebCrawler("https://www.w3schools.com/tags/tag_header.asp", 2, "en", "de");
         webCrawler.start();
     }
 
@@ -133,7 +134,7 @@ public class TestClass {
 
     @Test
     public void testTranslationDeToEn(){
-        String answer = webCrawler.translatingString("Javadoc", "en", "de");
+        String answer = webCrawler.translatingString("Hallo", "en", "de");
         assertEquals("Hi", answer);
     }
 

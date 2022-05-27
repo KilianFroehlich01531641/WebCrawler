@@ -27,7 +27,7 @@ public class WebCrawler {
      * @param source - the language the web pages are to be expected
      * @param target - the language to translate into
      */
-    public WebCrawler(int userPageDepth, String userURL, String source, String target){
+    public WebCrawler(String userURL, int userPageDepth, String source, String target){
         this.userMaximumPageDepth = userPageDepth;
         queueList = new ArrayList<>(userPageDepth);
         depthLevelResults = new ArrayList<>(userPageDepth);
