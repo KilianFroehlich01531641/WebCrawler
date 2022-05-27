@@ -29,7 +29,7 @@ public class WebCrawler{
      * @param source - the language the web pages are to be expected
      * @param target - the language to translate into
      */
-    public WebCrawler(String userURL, int userPageDepth, String source, String target){
+    public WebCrawler(ArrayList userURL, int userPageDepth, String source, String target){
         this.userMaximumPageDepth = userPageDepth;
         queueList = new ArrayList<>(userPageDepth);
         depthLevelResults = new ArrayList<>(userPageDepth);
@@ -40,7 +40,7 @@ public class WebCrawler{
         }
 
         try{
-            queueList.get(0).add(userURL);
+            queueList.get(0).addAll(userURL);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -99,27 +99,6 @@ public class WebCrawler{
             depthLevelCounter++;
         }
     }
-
-    /**
-     * the method that handles the lookup and then starts to write the result into the file.
-     * If the URL can't be accessed will handle the link accordingly.
-     * @param urlString - the url to crwal through
-     * @param currentItteration - the depth level that is currently worked on
-     */
-    /*public void crawl(String urlString, int currentItteration){
-        try{
-            URL url = new URL(urlString);
-            String currentHTML = getRawHTMLFromURL(url);
-            if(currentItteration+1 == userMaximumPageDepth || currentHTML == ""){
-                currentURLResultWriting(currentHTML, currentItteration , urlString);
-            }else{
-                parsingForLinksInString(currentHTML, currentItteration, urlString);
-            }
-        }catch (Exception e){
-            String currentHTML = "";
-            currentURLResultWriting(currentHTML, currentItteration, urlString);
-        }
-    }*/
 
     /**
      * Opens Buffered reader and writes HTML File into string.
@@ -188,18 +167,21 @@ public class WebCrawler{
     public void currentURLResultWriting(String rawHTMLPage, int currentDepth, String currentURL){
         synchronized (this){
             queueList.get(currentDepth).remove(currentURL);
-            alreadyVisitedURLs.add(currentURL);
+            if(!(alreadyVisitedURLs.contains(currentURL))){
+                alreadyVisitedURLs.add(currentURL);
+            }
         }
+
 
         if(rawHTMLPage == ""){
             synchronized (this) {
                 depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> broken link to <a>" + currentURL + "</a>\n\n");
             }
         }else{
+            String headers = parsingForHeadersInString(rawHTMLPage, currentDepth);
             synchronized (this) {
-                depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> link to <a>" + currentURL + "</a>\n");
+                depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> link to <a>" + currentURL + "</a>\n" + headers + "\n");
             }
-            parsingForHeadersInString(rawHTMLPage, currentDepth);
         }
     }
 
@@ -236,7 +218,7 @@ public class WebCrawler{
      * @param rawHTMLPage - the HTML in which the links are searched
      * @param currentDepth - current iteration
      */
-    public void parsingForHeadersInString(String rawHTMLPage, int currentDepth){
+    public String parsingForHeadersInString(String rawHTMLPage, int currentDepth){
         String headerPattern = "(<h[1-6][^><]*>)[\\w]+(</h[1-6]>)";
         Pattern pattern = Pattern.compile(headerPattern);
         Matcher matcher = pattern.matcher(rawHTMLPage);
@@ -246,9 +228,7 @@ public class WebCrawler{
             String translation = translateHeaders(matcher.group());
             headerString += translation + "\n";
         }
-        synchronized (this){
-            depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + headerString +"\n");
-        }
+        return headerString;
     }
 
     /**

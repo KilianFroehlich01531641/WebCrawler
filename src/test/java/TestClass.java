@@ -1,4 +1,5 @@
 import jdk.internal.jline.internal.Urls;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -6,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static org.junit.Assert.*;
@@ -16,7 +18,9 @@ public class TestClass {
 
     @Before
     public void setup(){
-        webCrawler = new WebCrawler("https://www.w3schools.com/tags/tag_header.asp",2, "en", "de");
+        ArrayList<String> links = new ArrayList<>();
+        links.add("https://www.w3schools.com/tags/tag_header.asp");
+        webCrawler = new WebCrawler(links,2, "en", "de");
     }
 
     @Test
@@ -67,12 +71,12 @@ public class TestClass {
     @Test
     public void lookingForHeaders(){
         try{
-            webCrawler.parsingForHeadersInString(webCrawler.getRawHTMLFromURL(new URL("https://www.w3schools.com/tags/tag_header.asp")), 0);
+            String actual = webCrawler.parsingForHeadersInString(webCrawler.getRawHTMLFromURL(new URL("https://www.w3schools.com/tags/tag_header.asp")), 0);
             String expectedMessage = "<h3 class=\"w3-margin-top\">JavaScript</h3>"
                     +"\n"+ "<h3 class=\"w3-margin-top\">Programmierung</h3>"
                     +"\n"+ "<h3 class=\"w3-margin-top\">HTML</h3>"
                     +"\n"+ "<h3 class=\"w3-margin-top\">CSS</h3>";
-            assertTrue(webCrawler.depthLevelResults.get(0).contains(expectedMessage));
+            assertTrue(actual.contains(expectedMessage));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -83,7 +87,7 @@ public class TestClass {
     public void lookingForHeadersInEmptyHTML(){
         try{
             webCrawler.parsingForHeadersInString("", 0);
-            assertEquals("\n", webCrawler.depthLevelResults.get(0));
+            assertEquals("", webCrawler.depthLevelResults.get(0));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -122,8 +126,16 @@ public class TestClass {
     @Test
     public void testWhole(){
         //webCrawler = new WebCrawler(2, "https://www.w3schools.com/tags/tag_header.asp");
-        webCrawler = new WebCrawler("https://www.w3schools.com/tags/tag_header.asp", 2, "en", "de");
-        webCrawler.start();
+        ArrayList<String> links = new ArrayList<>();
+        links.add("https://www.w3schools.com/tags/tag_header.asp");
+
+        webCrawler = new WebCrawler(links, 2, "en", "de");
+        try {
+            webCrawler.start();
+        }finally {
+            File testFile = new File("result_"+ webCrawler.userMaximumPageDepth + ".md");
+            testFile.delete();
+        }
     }
 
     @Test
@@ -143,6 +155,17 @@ public class TestClass {
         String testString = "<h1 id=\"firstHeading\" class=\"firstHeading mw-first-heading\">Example text</h1>";
         String testStringResult = "<h1 id=\"firstHeading\" class=\"firstHeading mw-first-heading\">Beispieltext</h1>";
         assertEquals(testStringResult, webCrawler.translateHeaders(testString));
+    }
+
+    @Test
+    public void addSeveralLinks(){
+        ArrayList<String> links = new ArrayList<>();
+        links.add("https://www.w3schools.com/tags/tag_header.asp");
+        links.add("https://www.w3schools.com");
+        links.add("https://www.google.com");
+
+        WebCrawler webCrawler1 = new WebCrawler(links, 3, "en", "de");
+        Assert.assertEquals(webCrawler1.queueList.get(0), links);
     }
 
 }

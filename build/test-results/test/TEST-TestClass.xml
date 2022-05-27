@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-05-27T11:41:42" hostname="DESKTOP-2FQ2SSA" time="52.518">
+<testsuite name="TestClass" tests="14" skipped="0" failures="0" errors="0" timestamp="2022-05-27T12:38:27" hostname="DESKTOP-2FQ2SSA" time="83.654">
   <properties/>
-  <testcase name="testWhole" classname="TestClass" time="52.518"/>
+  <testcase name="testingIfWrongURLIsHandledRight" classname="TestClass" time="0.001"/>
+  <testcase name="writeToFileTest" classname="TestClass" time="0.008"/>
+  <testcase name="testWhole" classname="TestClass" time="52.467"/>
+  <testcase name="creatingFileTest" classname="TestClass" time="0.001"/>
+  <testcase name="testingIfURLIsReadRight" classname="TestClass" time="0.182"/>
+  <testcase name="addSeveralLinks" classname="TestClass" time="0.0"/>
+  <testcase name="headerCuttingTest" classname="TestClass" time="0.921"/>
+  <testcase name="resultWritingTestWithEmptyHTML" classname="TestClass" time="0.0"/>
+  <testcase name="testTranslationDeToEn" classname="TestClass" time="0.947"/>
+  <testcase name="testTranslationEnToDe" classname="TestClass" time="0.974"/>
+  <testcase name="lookingForHeaders" classname="TestClass" time="9.274"/>
+  <testcase name="URLAddingToQueue" classname="TestClass" time="9.95"/>
+  <testcase name="resultWritingTest" classname="TestClass" time="8.927"/>
+  <testcase name="lookingForHeadersInEmptyHTML" classname="TestClass" time="0.001"/>
   <system-out><![CDATA[File Created.
+File Created.
 current link: https://www.w3schools.com/tags/tag_header.asp
 going deeper: Level 1 now.
 current link: https://www.w3schools.com/images/w3schools_logo_436_2.png
@@ -59,6 +73,8 @@ current link: www.w3schools.com
 current link: https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js
 current link: https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js
 going deeper: Level 2 now.
+File Created.
+File exists already.
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
