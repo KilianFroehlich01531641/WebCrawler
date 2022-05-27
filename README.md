@@ -3,6 +3,8 @@ Web Crawler for CleanCode
 
 to run start in ide
 
-navigate to test class
+navigate to class Main
+adjust program arguments in following form:
+-Depth -Source Language -Target Language -URL [-additional URLs devided by space].
 
-run testWhole() in TestClass.
+run main() in Main.
