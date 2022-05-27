@@ -5,10 +5,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class WebCrawler {
+public class WebCrawler{
 
     /**
      * Global variables
@@ -19,6 +20,7 @@ public class WebCrawler {
     String source;
     String target;
     ArrayList<String> alreadyVisitedURLs;
+    CountDownLatch latch;
 
     /**
      * Constructor
@@ -49,14 +51,25 @@ public class WebCrawler {
 
     /**
      * Main method of this class. Initializes the file, crawls through the webpages and prints resulst into the file.
+     * this Method will start a thread for each link. it will stop after each level and wait for threads to finish.
+     * If I wouldn't do that this method may stop producing threads the list is empty (because threads my not have added new items so far)
+     * and this method will then wait without starting new threads, although new items get added.
      */
     public void start(){
         initializeFile();
 
         for (int i = 0; i < userMaximumPageDepth; i++) {
+            latch = new CountDownLatch(queueList.get(i).size());
             for (int j = 0; j < queueList.get(i).size() ; j++) {
                 System.out.println("current link: " + queueList.get(i).get(j));
-                crawl(queueList.get(i).get(j).toString(), i);
+                //crawl(queueList.get(i).get(j).toString(), i);
+                CrawlerThread thread = new CrawlerThread(queueList.get(i).get(j).toString(), i, this);
+                thread.start();
+            }
+            try{
+                latch.await();
+            } catch (InterruptedException e){
+                System.out.print(e);
             }
             System.out.println("going deeper: Level " + (i+1)+ " now.");
         }
@@ -93,7 +106,7 @@ public class WebCrawler {
      * @param urlString - the url to crwal through
      * @param currentItteration - the depth level that is currently worked on
      */
-    public void crawl(String urlString, int currentItteration){
+    /*public void crawl(String urlString, int currentItteration){
         try{
             URL url = new URL(urlString);
             String currentHTML = getRawHTMLFromURL(url);
@@ -106,7 +119,7 @@ public class WebCrawler {
             String currentHTML = "";
             currentURLResultWriting(currentHTML, currentItteration, urlString);
         }
-    }
+    }*/
 
     /**
      * Opens Buffered reader and writes HTML File into string.
@@ -173,12 +186,19 @@ public class WebCrawler {
      * @param currentURL - the url of the HTML page
      */
     public void currentURLResultWriting(String rawHTMLPage, int currentDepth, String currentURL){
-        queueList.get(currentDepth).remove(currentURL);
-        alreadyVisitedURLs.add(currentURL);
+        synchronized (this){
+            queueList.get(currentDepth).remove(currentURL);
+            alreadyVisitedURLs.add(currentURL);
+        }
+
         if(rawHTMLPage == ""){
-            depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> broken link to <a>" + currentURL +"</a>\n\n");
+            synchronized (this) {
+                depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> broken link to <a>" + currentURL + "</a>\n\n");
+            }
         }else{
-            depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> link to <a>" + currentURL +"</a>\n");
+            synchronized (this) {
+                depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> link to <a>" + currentURL + "</a>\n");
+            }
             parsingForHeadersInString(rawHTMLPage, currentDepth);
         }
     }
@@ -200,8 +220,10 @@ public class WebCrawler {
             while (matcher.find()){
                 String foundString = matcher.group();
                 //have to check two lists now but decided to check here and not in the start() method because now I just don't add any links which are not supposed to be in here
-                if(!(alreadyVisitedURLs.contains(foundString) || queueList.get(currentDepth+1).contains(foundString))){
-                    queueList.get(currentDepth+1).add(foundString);
+                synchronized (this) {
+                    if (!(alreadyVisitedURLs.contains(foundString) || queueList.get(currentDepth + 1).contains(foundString))) {
+                        queueList.get(currentDepth + 1).add(foundString);
+                    }
                 }
             }
         }catch (Exception e){
@@ -224,7 +246,9 @@ public class WebCrawler {
             String translation = translateHeaders(matcher.group());
             headerString += translation + "\n";
         }
-        depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + headerString +"\n");
+        synchronized (this){
+            depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + headerString +"\n");
+        }
     }
 
     /**

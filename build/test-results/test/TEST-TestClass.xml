@@ -1,7 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-05-27T10:37:44" hostname="DESKTOP-2FQ2SSA" time="1.531">
+<testsuite name="TestClass" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-05-27T11:41:42" hostname="DESKTOP-2FQ2SSA" time="52.518">
   <properties/>
-  <testcase name="headerCuttingTest" classname="TestClass" time="1.531"/>
-  <system-out><![CDATA[]]></system-out>
+  <testcase name="testWhole" classname="TestClass" time="52.518"/>
+  <system-out><![CDATA[File Created.
+current link: https://www.w3schools.com/tags/tag_header.asp
+going deeper: Level 1 now.
+current link: https://www.w3schools.com/images/w3schools_logo_436_2.png
+current link: https://www.google-analytics.com/analytics.js
+current link: https://cdn.snigelweb.com/adengine/w3schools.com/loader.js
+current link: https://www.w3schools.com
+current link: https://www.w3schools.com/videos/index.php
+current link: https://profile.w3schools.com/log-in?redirect_url=https%3A%2F%2Fmy-learning.w3schools.com
+current link: https://courses.w3schools.com
+current link: https://www.w3schools.com/spaces
+current link: https://courses.w3schools.com/courses/html
+current link: https://courses.w3schools.com/courses/css
+current link: https://courses.w3schools.com/courses/javascript
+current link: https://courses.w3schools.com/programs/front-end
+current link: https://courses.w3schools.com/courses/sql
+current link: https://courses.w3schools.com/courses/php
+current link: https://courses.w3schools.com/courses/python
+current link: https://courses.w3schools.com/courses/numpy-fundamentals
+current link: https://courses.w3schools.com/courses/pandas-fundamentals
+current link: https://courses.w3schools.com/programs/data-analytics
+current link: https://courses.w3schools.com/courses/jquery
+current link: https://courses.w3schools.com/courses/java
+current link: https://courses.w3schools.com/courses/cplusplus
+current link: https://courses.w3schools.com/courses/c-sharp
+current link: https://courses.w3schools.com/courses/r-fundamentals
+current link: https://courses.w3schools.com/courses/xml
+current link: https://courses.w3schools.com/courses/introduction-to-cyber-security
+current link: https://courses.w3schools.com/courses/accessibility-fundamentals
+current link: https://courses.w3schools.com/browse/certifications
+current link: https://courses.w3schools.com/browse/certifications/courses/html-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/css-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/javascript-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/front-end-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/sql-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/php-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/python-certificaftion-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/data-science-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/bootstrap-3-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/bootstrap-4-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/jquery-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/java-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/c-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/react-certification-exam
+current link: https://courses.w3schools.com/browse/certifications/courses/xml-certification-exam
+current link: https://shop.w3schools.com
+current link: https://www.facebook.com/w3schoolscom
+current link: https://www.instagram.com/w3schools.com_official
+current link: https://www.linkedin.com/company/w3schools.com
+current link: https://discord.gg/6Z7UaRbUQM
+current link: http://www.w3.org/2000/svg
+current link: www.w3schools.com/cert/default.asp
+current link: www.w3schools.com/w3css/default.asp
+current link: www.w3schools.com
+current link: https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js
+current link: https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js
+going deeper: Level 2 now.
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
