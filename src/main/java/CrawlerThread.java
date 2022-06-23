@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.List;
 
 public class CrawlerThread extends Thread {
     private String urlString;
@@ -27,23 +29,42 @@ public class CrawlerThread extends Thread {
     /**
      * the method that handles the lookup and then starts to write the result into the file.
      * If the URL can't be accessed will handle the link accordingly.
-     * @param urlString - the url to crwal through
+     * @param urlString - the url to crawl through
      * @param currentItteration - the depth level that is currently worked on
      */
     public void crawl(String urlString, int currentItteration){
-        try{
-            URL url = new URL(urlString);
-            String currentHTML = webCrawler.getRawHTMLFromURL(url);
-            if(currentItteration+1 == webCrawler.userMaximumPageDepth || currentHTML == ""){
-                webCrawler.currentURLResultWriting(currentHTML, currentItteration , urlString);
-            }else{
-                webCrawler.parsingForLinksInString(currentHTML, currentItteration, urlString);
+        currentURLResultWriting(currentItteration, urlString);
+        if(currentItteration < webCrawler.userMaximumPageDepth-1){
+            webCrawler.getParser().parsingForLinksInString(urlString, currentItteration);
+        }
+        webCrawler.latch.countDown();
+    }
+
+    /**
+     * Writes the currently found link into the global depthLevelResults list.
+     * Also removes link from queue and adds it to visited list.
+     * @param currentDepth - current iteration
+     * @param currentURL - the url of the HTML page
+     */
+    public void currentURLResultWriting(int currentDepth, String currentURL){
+        synchronized (webCrawler.mutex){
+            webCrawler.queueList.get(currentDepth).remove(currentURL);
+            if(!(webCrawler.alreadyVisitedURLs.contains(currentURL))){
+                webCrawler.alreadyVisitedURLs.add(currentURL);
             }
-        }catch (Exception e){
-            String currentHTML = "";
-            webCrawler.currentURLResultWriting(currentHTML, currentItteration, urlString);
-        } finally {
-            webCrawler.latch.countDown();
+        }
+
+        List<String> headers = webCrawler.getParser().parsingForHeadersInString(currentURL);
+        //Translater translater = new Translater(webCrawler.source, webCrawler.target);
+        //headers = translater.translateHeaders(headers);
+        if(headers.toString().equals("")){
+            synchronized (webCrawler.mutex) {
+                webCrawler.depthLevelResults.set(currentDepth, webCrawler.depthLevelResults.get(currentDepth) + "<br>--> broken link to <a>" + currentURL + "</a>\n\n");
+            }
+        }else{
+            synchronized (webCrawler.mutex) {
+                webCrawler.depthLevelResults.set(currentDepth, webCrawler.depthLevelResults.get(currentDepth) + "<br>--> link to <a>" + currentURL + "</a>\n" + headers.toString() + "\n");
+            }
         }
     }
 }

@@ -1,3 +1,5 @@
+import sun.awt.Mutex;
+
 import java.io.*;
 import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
@@ -21,6 +23,13 @@ public class WebCrawler{
     String target;
     ArrayList<String> alreadyVisitedURLs;
     CountDownLatch latch;
+    Parser parser;
+    final Mutex mutex = new Mutex();
+
+    public Parser getParser() {
+        return parser;
+    }
+
 
     /**
      * Constructor
@@ -47,6 +56,7 @@ public class WebCrawler{
 
         this.source = source;
         this.target = target;
+        this.parser = new Parser(this);
     }
 
     /**
@@ -56,13 +66,13 @@ public class WebCrawler{
      * and this method will then wait without starting new threads, although new items get added.
      */
     public void start(){
-        initializeFile();
+        FileHandler fileHandler = new FileHandler(userMaximumPageDepth);
+        fileHandler.initializeFile( source, target);
 
         for (int i = 0; i < userMaximumPageDepth; i++) {
             latch = new CountDownLatch(queueList.get(i).size());
             for (int j = 0; j < queueList.get(i).size() ; j++) {
                 System.out.println("current link: " + queueList.get(i).get(j));
-                //crawl(queueList.get(i).get(j).toString(), i);
                 CrawlerThread thread = new CrawlerThread(queueList.get(i).get(j).toString(), i, this);
                 thread.start();
             }
@@ -73,207 +83,6 @@ public class WebCrawler{
             }
             System.out.println("going deeper: Level " + (i+1)+ " now.");
         }
-
-        writeResultsToFile();
-    }
-
-    /**
-     * creates a MD file and writes header information into it.
-     */
-    public void initializeFile(){
-        createMDFile();
-        writeMDFile("<br>depth: "+ this.userMaximumPageDepth +"\n" +
-                "<br>source language: "+ source +"\n" +
-                "<br>target language: "+ target +"\n" +
-                "<br>summary: \n\n");
-    }
-
-    /**
-     * Takes the gloval val depthLevelResults and writes the content into the MD file.
-     */
-    public void writeResultsToFile(){
-        int depthLevelCounter = 1;
-        for (String result: depthLevelResults) {
-            writeMDFile("---------Depth Level: " + depthLevelCounter + "--------\n");
-            writeMDFile(result);
-            depthLevelCounter++;
-        }
-    }
-
-    /**
-     * Opens Buffered reader and writes HTML File into string.
-     * @param userURL - the URL of the page
-     * @return - the page as a string or and empty string if it can't be read.
-     */
-    public String getRawHTMLFromURL(URL userURL){
-        String rawHTMLPage = "";
-        try{
-            BufferedReader input = new BufferedReader(new InputStreamReader(userURL.openStream()));
-            String currentLineInHMTL = input.readLine();
-            do{
-                rawHTMLPage += (currentLineInHMTL);
-                currentLineInHMTL = input.readLine();
-            }while (currentLineInHMTL != null);
-        } catch (Exception e){
-            return rawHTMLPage;
-        }
-        return rawHTMLPage;
-    }
-
-    /**
-     * Creates a File.
-     * @return true if the file is created; false if it already exists or an error occurred.
-     */
-    public boolean createMDFile(){
-        File resultFile = new File("result_"+ userMaximumPageDepth + ".md");
-        try{
-            if(resultFile.createNewFile()){
-                System.out.println("File Created.");
-                return true;
-            }else {
-                System.out.println("File exists already.");
-                return false;
-            }
-        }catch (IOException e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * Writes a string into a file.
-     * @param input - the content to write into the file.
-     * @return - true if success; false if an error occurred.
-     */
-    public boolean writeMDFile(String input){
-        try{
-            FileWriter resultFile = new FileWriter("result_"+ userMaximumPageDepth + ".md", true);
-            resultFile.write(input);
-            resultFile.close();
-            return true;
-        }catch (IOException e){
-            System.out.println("Could not write to file.");
-            return false;
-        }
-    }
-
-    /**
-     * Writes the currently found link into the global depthLevelResults list.
-     * Also removes link from queue and adds it to visited list.
-     * @param rawHTMLPage - the page in which headers should be detected
-     * @param currentDepth - current iteration
-     * @param currentURL - the url of the HTML page
-     */
-    public void currentURLResultWriting(String rawHTMLPage, int currentDepth, String currentURL){
-        synchronized (this){
-            queueList.get(currentDepth).remove(currentURL);
-            if(!(alreadyVisitedURLs.contains(currentURL))){
-                alreadyVisitedURLs.add(currentURL);
-            }
-        }
-
-
-        if(rawHTMLPage == ""){
-            synchronized (this) {
-                depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> broken link to <a>" + currentURL + "</a>\n\n");
-            }
-        }else{
-            String headers = parsingForHeadersInString(rawHTMLPage, currentDepth);
-            synchronized (this) {
-                depthLevelResults.set(currentDepth, depthLevelResults.get(currentDepth) + "<br>--> link to <a>" + currentURL + "</a>\n" + headers + "\n");
-            }
-        }
-    }
-
-    /**
-     * Look into the HTML of an page and searches for more links for future iterations.
-     * @param rawHTMLPage - the HTML in which the links are searched
-     * @param currentDepth - current iteration
-     * @param currentURL - the url of the HTML page
-     */
-    public void parsingForLinksInString(String rawHTMLPage, int currentDepth, String currentURL){
-        currentURLResultWriting(rawHTMLPage, currentDepth, currentURL);
-
-        String urlPattern = "(www|http:|https:)+[^\\s\"\'\\*\\)]+[\\w]";
-        Pattern pattern = Pattern.compile(urlPattern);
-        Matcher matcher = pattern.matcher(rawHTMLPage);
-
-        try{
-            while (matcher.find()){
-                String foundString = matcher.group();
-                //have to check two lists now but decided to check here and not in the start() method because now I just don't add any links which are not supposed to be in here
-                synchronized (this) {
-                    if (!(alreadyVisitedURLs.contains(foundString) || queueList.get(currentDepth + 1).contains(foundString))) {
-                        queueList.get(currentDepth + 1).add(foundString);
-                    }
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Searches for header tags in th HTML file.
-     * @param rawHTMLPage - the HTML in which the links are searched
-     * @param currentDepth - current iteration
-     */
-    public String parsingForHeadersInString(String rawHTMLPage, int currentDepth){
-        String headerPattern = "(<h[1-6][^><]*>)[\\w]+(</h[1-6]>)";
-        Pattern pattern = Pattern.compile(headerPattern);
-        Matcher matcher = pattern.matcher(rawHTMLPage);
-        String headerString = "";
-
-        while (matcher.find()){
-            String translation = translateHeaders(matcher.group());
-            headerString += translation + "\n";
-        }
-        return headerString;
-    }
-
-    /**
-     * Translates a string from given language to target language.
-     * @param text - the string to translate
-     * @param langTo - source language
-     * @param langFrom - target language
-     * @return a translated version of the input string
-     */
-    //Source:https://stackoverflow.com/questions/8147284/how-to-use-google-translate-api-in-my-java-application
-    public String translatingString(String text, String langTo, String langFrom){
-        try{
-            String urlStr = "https://script.google.com/macros/s/AKfycbw_Cn96JWZU7YA0aovyK50WuP-Bkqg023vHuHnRm_icFWpmOjkkXcNRQ1eFP8E3itQI/exec" +
-                    "?q=" + URLEncoder.encode(text, "UTF-8") +
-                    "&target=" + langTo +
-                    "&source=" + langFrom;
-            URL url = new URL(urlStr);
-            StringBuilder response = new StringBuilder();
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            return response.toString();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    /**
-     * removes header tags from string, translates it and gives it back with headers.
-     * @param input - the string to translate
-     * @return the translated version of the header
-     */
-    public String translateHeaders(String input){
-         String[] headerParts = input.split(">");
-         String[] headerPartsTwo = headerParts[1].split("<");
-         String translatedString = translatingString(headerPartsTwo[0], target, source);
-         if(translatedString != ""){
-             return headerParts[0] + ">" + translatedString + "<" + headerPartsTwo[1] + ">";
-         }
-         return headerParts[0] + ">" + headerPartsTwo[0] + "<" + headerPartsTwo[1] + ">";
+        fileHandler.writeResultsToFile(depthLevelResults);
     }
 }
