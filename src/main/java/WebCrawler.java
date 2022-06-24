@@ -71,7 +71,8 @@ public class WebCrawler{
 
         for (int i = 0; i < userMaximumPageDepth; i++) {
             latch = new CountDownLatch(queueList.get(i).size());
-            for (int j = 0; j < queueList.get(i).size() ; j++) {
+            int sizeAtStart = queueList.get(i).size();
+            for (int j = 0; j < sizeAtStart; j++) {
                 System.out.println("current link: " + queueList.get(i).get(j));
                 CrawlerThread thread = new CrawlerThread(queueList.get(i).get(j).toString(), i, this);
                 thread.start();

@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
@@ -33,11 +34,17 @@ public class CrawlerThread extends Thread {
      * @param currentItteration - the depth level that is currently worked on
      */
     public void crawl(String urlString, int currentItteration){
-        currentURLResultWriting(currentItteration, urlString);
-        if(currentItteration < webCrawler.userMaximumPageDepth-1){
-            webCrawler.getParser().parsingForLinksInString(urlString, currentItteration);
+        try{
+            currentURLResultWriting(currentItteration, urlString);
+            if(currentItteration < webCrawler.userMaximumPageDepth-1){
+                webCrawler.getParser().parsingForLinksInString(urlString, currentItteration);
+            }
+        }catch (Exception e){
+            System.out.println("Critical Error in Thread "+this.getId()+".\n" +
+                    "Corrupt Link: "+ urlString +".");
+        }finally {
+            webCrawler.latch.countDown();
         }
-        webCrawler.latch.countDown();
     }
 
     /**
@@ -46,18 +53,21 @@ public class CrawlerThread extends Thread {
      * @param currentDepth - current iteration
      * @param currentURL - the url of the HTML page
      */
-    public void currentURLResultWriting(int currentDepth, String currentURL){
+    public void currentURLResultWriting(int currentDepth, String currentURL) {
         synchronized (webCrawler.mutex){
-            webCrawler.queueList.get(currentDepth).remove(currentURL);
+            //webCrawler.queueList.get(currentDepth).remove(currentURL);
             if(!(webCrawler.alreadyVisitedURLs.contains(currentURL))){
                 webCrawler.alreadyVisitedURLs.add(currentURL);
             }
         }
 
         List<String> headers = webCrawler.getParser().parsingForHeadersInString(currentURL);
+        /**
+         * Working translator for the Header but activating this will decrease performance drastically as each threads needs to send several HTTP requests to translate the headers
+         */
         //Translater translater = new Translater(webCrawler.source, webCrawler.target);
         //headers = translater.translateHeaders(headers);
-        if(headers.toString().equals("")){
+        if(headers.toString().equals("[]")){
             synchronized (webCrawler.mutex) {
                 webCrawler.depthLevelResults.set(currentDepth, webCrawler.depthLevelResults.get(currentDepth) + "<br>--> broken link to <a>" + currentURL + "</a>\n\n");
             }

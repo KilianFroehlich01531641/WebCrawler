@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -22,7 +23,7 @@ public class Parser{
         try{
             resultUrls = jsoup.getLinkByTagFromURL(url, "a");
         }catch (Exception e){
-            System.out.println("HTTP Connection Failed. Link was broken.");
+            System.out.println("HTTP Connection Failed. Link "+url+" was broken.");
         }
 
         for (String currentUrl: resultUrls) {
@@ -44,7 +45,7 @@ public class Parser{
         try{
             return jsoup.getElementTextByTagFromURL(url, "h1, h2, h3, h4, h5, h6, h7");
         }catch (Exception e){
-            System.out.println("HTTP Connection Failed. Link Broken or connection time outed.");
+            System.out.println("HTTP Connection Failed. Link Broken therefore no Headers to read.");
             return new ArrayList<String>();
         }
     }
