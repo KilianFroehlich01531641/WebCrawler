@@ -1,4 +1,6 @@
 import static org.junit.Assert.*;
+
+import org.graalvm.compiler.debug.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 

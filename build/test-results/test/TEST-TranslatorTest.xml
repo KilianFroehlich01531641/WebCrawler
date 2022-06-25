@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TranslatorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-06-23T18:18:47" hostname="DESKTOP-3475QVP" time="4.739">
-  <properties/>
-  <testcase name="testTranslationDeToEn" classname="TranslatorTest" time="3.91"/>
-  <testcase name="testTranslationEnToDe" classname="TranslatorTest" time="0.829"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
